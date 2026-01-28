@@ -3,265 +3,204 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shopvia - Online Shopping</title>
-<link rel="stylesheet" href="style.css">
+<title>Shopvia – Online Shopping</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
+body{background:#f5f5f5;color:#333}
+
+/* HEADER */
+header{
+  background:#ff6a00;
+  color:#fff;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+header h1{font-size:24px}
+header span{font-weight:bold}
+
+/* HERO */
+.hero{
+  background:#fff;
+  padding:20px;
+  text-align:center;
+}
+.hero img{
+  width:100%;
+  max-height:250px;
+  object-fit:cover;
+  border-radius:10px;
+}
+.hero h2{margin:15px 0}
+
+/* CATEGORIES */
+.categories{
+  display:flex;
+  overflow-x:auto;
+  gap:10px;
+  padding:15px;
+  background:#fff;
+}
+.cat{
+  min-width:100px;
+  background:#ff6a00;
+  color:#fff;
+  padding:15px;
+  text-align:center;
+  border-radius:8px;
+  font-size:14px;
+  flex-shrink:0;
+}
+
+/* PRODUCTS */
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:15px;
+  padding:15px;
+}
+.product{
+  background:#fff;
+  border-radius:10px;
+  padding:10px;
+}
+.product img{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  border-radius:8px;
+}
+.product h4{margin:8px 0;font-size:14px}
+.price{color:#ff6a00;font-weight:bold}
+
+.product button{
+  width:100%;
+  padding:8px;
+  margin-top:5px;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+}
+.add{background:#333;color:#fff}
+.buy{background:#ff6a00;color:#fff}
+
+/* CART */
+.cart{
+  background:#fff;
+  padding:15px;
+  margin:15px;
+  border-radius:10px;
+}
+.cart div{margin-bottom:5px}
+
+/* PAYMENT */
+select, .checkout{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+}
+.checkout{
+  background:#ff6a00;
+  color:#fff;
+  border:none;
+  border-radius:5px;
+  font-size:16px;
+}
+</style>
 </head>
+
 <body>
 
-<!-- Header -->
 <header>
-    <div class="logo">Shopvia</div>
-    <nav>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#categories">Categories</a></li>
-            <li><a href="#products">Products</a></li>
-            <li><a href="#cart">Cart (<span id="cart-count">0</span>)</a></li>
-        </ul>
-    </nav>
+  <h1>Shopvia</h1>
+  <span>Cart: <span id="count">0</span></span>
 </header>
 
-<!-- Hero Banner -->
-<section class="hero" id="home">
-    <div class="hero-text">
-        <h1>Shopvia - Trendy Finds, Easy Buys</h1>
-        <p>Discover everything you love, just a click away!</p>
-        <a href="#products" class="btn">Shop Now</a>
-    </div>
-    <div class="hero-banner">
-        <img src="images/banner1.jpg" alt="Banner">
-    </div>
+<section class="hero">
+  <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30">
+  <h2>Shop Smart. Shopvia.</h2>
 </section>
 
-<!-- Categories Section (Horizontal Scroll) -->
-<section id="categories">
-    <h2>Categories</h2>
-    <div class="category-scroll">
-        <div class="category-card">Fashion</div>
-        <div class="category-card">Electronics</div>
-        <div class="category-card">Accessories</div>
-        <div class="category-card">Home</div>
-        <div class="category-card">Beauty</div>
-        <div class="category-card">Kids</div>
-    </div>
+<section class="categories">
+  <div class="cat">Fashion</div>
+  <div class="cat">Electronics</div>
+  <div class="cat">Beauty</div>
+  <div class="cat">Home</div>
+  <div class="cat">Kids</div>
+  <div class="cat">Accessories</div>
 </section>
 
-<!-- Products Section -->
-<section id="products">
-    <h2>Hot Products</h2>
-    <div class="product-grid" id="product-grid">
-        <!-- Products loaded dynamically -->
-    </div>
+<section class="products" id="products">
 </section>
 
-<!-- Cart Section -->
-<section id="cart">
-    <h2>Your Cart</h2>
-    <div id="cart-items"></div>
-    <h3>Total: $<span id="total">0</span></h3>
+<section class="cart">
+  <h3>Your Cart</h3>
+  <div id="cart"></div>
+  <strong>Total: $<span id="total">0</span></strong>
 
-    <h3>Choose Payment Method:</h3>
-    <select id="payment-method">
-        <option value="mtn">MTN Mobile Money</option>
-        <option value="telecel">Telecel Mobile Money</option>
-        <option value="visa">Visa Card</option>
-    </select>
-    <button onclick="checkout()">Checkout</button>
+  <select id="payment">
+    <option>MTN Mobile Money</option>
+    <option>Telecel Mobile Money</option>
+    <option>Visa Card</option>
+  </select>
+
+  <button class="checkout" onclick="checkout()">Checkout</button>
 </section>
 
-<!-- About Section -->
-<section id="about">
-    <h2>About Shopvia</h2>
-    <p>Shopvia is your ultimate online shopping destination for fashion, gadgets, home, beauty, and lifestyle products. Shop fast, easy, and secure!</p>
-</section>
+<script>
+const products=[
+ {name:"Women Dress",price:25,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
+ {name:"Sneakers",price:40,img:"https://images.unsplash.com/photo-1528701800489-20be3c3ea79b"},
+ {name:"Smart Watch",price:55,img:"https://images.unsplash.com/photo-1519744792095-2f2205e87b6f"},
+ {name:"Bluetooth Earbuds",price:30,img:"https://images.unsplash.com/photo-1585386959984-a4155228f97d"},
+ {name:"Perfume",price:20,img:"https://images.unsplash.com/photo-1594035910387-fea47794261f"},
+ {name:"Handbag",price:35,img:"https://images.unsplash.com/photo-1548036328-c9fa89d128fa"},
+ {name:"Sofa Chair",price:120,img:"https://images.unsplash.com/photo-1615873968403-89e068629265"},
+ {name:"Kids Outfit",price:22,img:"https://images.unsplash.com/photo-1600185365483-26d7a4cc7519"}
+];
 
-<!-- Contact Section -->
-<section id="contact">
-    <h2>Contact Us</h2>
-    <form id="contact-form">
-        <input type="text" placeholder="Your Name" required>
-        <input type="email" placeholder="Your Email" required>
-        <textarea placeholder="Message" required></textarea>
-        <button type="submit">Send Message</button>
-    </form>
-</section>
+let cart=[],total=0;
 
-<script src="script.js"></script>
+const productDiv=document.getElementById("products");
+products.forEach(p=>{
+ productDiv.innerHTML+=`
+  <div class="product">
+    <img src="${p.img}">
+    <h4>${p.name}</h4>
+    <div class="price">$${p.price}</div>
+    <button class="add" onclick="add('${p.name}',${p.price})">Add to Cart</button>
+    <button class="buy" onclick="buy('${p.name}',${p.price})">Buy Now</button>
+  </div>
+ `;
+});
+
+function add(name,price){
+ cart.push({name,price});
+ total+=price;
+ render();
+}
+
+function buy(name,price){
+ alert("Proceeding to payment for "+name+" ($"+price+")");
+}
+
+function render(){
+ document.getElementById("cart").innerHTML=cart.map(i=>`${i.name} - $${i.price}`).join("<br>");
+ document.getElementById("total").innerText=total;
+ document.getElementById("count").innerText=cart.length;
+}
+
+function checkout(){
+ if(cart.length===0){alert("Cart is empty");return;}
+ alert("Order placed using "+document.getElementById("payment").value);
+ cart=[];total=0;render();
+}
+</script>
+
 </body>
 </html>
-/* Reset & Body */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #fefefe;
-    color: #333;
-}
-
-/* Header */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #0077b6;
-    padding: 15px 30px;
-    color: white;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-header .logo { font-size: 24px; font-weight: bold; }
-header nav ul { list-style: none; display: flex; gap: 20px; }
-header nav ul li a { color: white; text-decoration: none; font-weight: bold; }
-
-/* Hero */
-.hero {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    background-color: #00b4d8;
-    color: white;
-    padding: 50px 20px;
-}
-
-.hero img { width: 100%; max-width: 500px; border-radius: 10px; }
-.hero-text { max-width: 600px; }
-.hero .btn { padding: 10px 20px; background-color: #0077b6; color: white; text-decoration: none; border-radius: 5px; }
-
-/* Category Scroll */
-.category-scroll {
-    display: flex;
-    overflow-x: auto;
-    gap: 15px;
-    padding: 20px;
-}
-
-.category-card {
-    min-width: 120px;
-    background-color: #00b4d8;
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    flex-shrink: 0;
-    cursor: pointer;
-}
-
-/* Products */
-.product-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px;
-}
-
-.product {
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 15px;
-    width: 200px;
-    text-align: center;
-    border-radius: 8px;
-    transition: transform 0.2s;
-}
-
-.product:hover { transform: scale(1.05); }
-
-.product img { width: 100%; height: auto; }
-.product button {
-    margin-top: 10px;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.product .add { background-color: #0077b6; color: white; }
-.product .buy { background-color: #00b4d8; color: white; }
-
-/* Cart Section */
-#cart { padding: 20px; background-color: #f1f1f1; }
-#cart-items { margin-bottom: 10px; }
-
-/* Sections */
-section { padding: 40px 20px; }
-form input, form textarea, form button, select {
-    display: block; width: 100%; margin-bottom: 10px; padding: 10px; border-radius: 5px; border: 1px solid #ccc;
-}
-form button { background-color: #0077b6; color: white; cursor: pointer; }
-form button:hover { background-color: #0096c7; }
-
-/* Responsive */
-@media(max-width: 768px){
-    .hero { flex-direction: column; text-align: center; }
-    .product-grid { flex-direction: column; align-items: center; }
-    header nav ul { flex-direction: column; gap: 10px; }
-}
-[
-    {"name":"Stylish Jacket","price":45,"image":"images/product1.jpg"},
-    {"name":"Trendy Sneakers","price":60,"image":"images/product2.jpg"},
-    {"name":"Elegant Handbag","price":80,"image":"images/product3.jpg"},
-    {"name":"Luxury Watch","price":120,"image":"images/product4.jpg"},
-    {"name":"Smartphone","price":350,"image":"images/product5.jpg"},
-    {"name":"Bluetooth Earbuds","price":50,"image":"images/product6.jpg"},
-    {"name":"Sofa Set","price":500,"image":"images/product7.jpg"},
-    {"name":"Perfume","price":70,"image":"images/product8.jpg"}
-]
-let cart = [];
-let total = 0;
-
-// Load products dynamically
-fetch('products.json')
-    .then(res => res.json())
-    .then(products => {
-        const grid = document.getElementById('product-grid');
-        products.forEach(product => {
-            const div = document.createElement('div');
-            div.className = 'product';
-            div.innerHTML = `
-                <img src="${product.image}" alt="${product.name}">
-                <h3>${product.name}</h3>
-                <p>$${product.price}</p>
-                <button class="add" onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
-                <button class="buy" onclick="buyNow('${product.name}', ${product.price})">Buy Now</button>
-            `;
-            grid.appendChild(div);
-        });
-    });
-
-// Add to cart
-function addToCart(name, price){
-    cart.push({name, price});
-    total += price;
-    renderCart();
-}
-
-// Buy now
-function buyNow(name, price){
-    alert(`Thank you! You bought ${name} for $${price}. Proceed to payment.`);
-}
-
-// Render cart
-function renderCart(){
-    const cartItems = document.getElementById('cart-items');
-    const cartCount = document.getElementById('cart-count');
-    cartItems.innerHTML = '';
-    cart.forEach(item=>{
-        const div = document.createElement('div');
-        div.textContent = `${item.name} - $${item.price}`;
-        cartItems.appendChild(div);
-    });
-    cartCount.textContent = cart.length;
-    document.getElementById('total').textContent = total;
-}
-
-// Checkout
-function checkout(){
-    const method = document.getElementById('payment-method').value;
-    if(cart.length===0){ alert("Your cart is empty!"); return; }
-    alert(`Thank you for your purchase! Payment method: ${method}. Total: $${total}`);
-    cart = [];
-    total = 0;
-    renderCart();
-}
