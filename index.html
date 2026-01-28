@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopvia - Online Shopping</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">Shopvia</div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#cart">Cart</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1>Shopvia - Trendy Finds, Easy Buys</h1>
+        <p>Discover your favorite products, fast and easy!</p>
+        <a href="#products" class="btn">Shop Now</a>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products">
+        <h2>Our Products</h2>
+        <div class="product-grid">
+            <!-- Example Product -->
+            <div class="product">
+                <img src="images/product1.jpg" alt="Product 1">
+                <h3>Stylish Jacket</h3>
+                <p>$45.00</p>
+                <button onclick="addToCart('Stylish Jacket', 45)">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="images/product2.jpg" alt="Product 2">
+                <h3>Trendy Sneakers</h3>
+                <p>$60.00</p>
+                <button onclick="addToCart('Trendy Sneakers', 60)">Add to Cart</button>
+            </div>
+            <!-- Add more products here -->
+        </div>
+    </section>
+
+    <!-- Cart Section -->
+    <section id="cart">
+        <h2>Your Cart</h2>
+        <div id="cart-items"></div>
+        <h3>Total: $<span id="total">0</span></h3>
+
+        <h3>Choose Payment Method:</h3>
+        <select id="payment-method">
+            <option value="mtn">MTN Mobile Money</option>
+            <option value="telecel">Telecel Mobile Money</option>
+            <option value="visa">Visa Card</option>
+        </select>
+        <button onclick="checkout()">Checkout</button>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2>About Shopvia</h2>
+        <p>Shopvia is your ultimate online shopping destination for fashion, gadgets, and lifestyle products. Fast, easy, and secure shopping from the comfort of your home.</p>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <form id="contact-form">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea placeholder="Message" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html> body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fefefe;
+    color: #333;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0077b6;
+    padding: 15px 30px;
+    color: white;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.hero {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #00b4d8;
+    color: white;
+}
+
+.hero .btn {
+    padding: 10px 20px;
+    background-color: #0077b6;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.product {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 15px;
+    width: 200px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.product img {
+    width: 100%;
+    height: auto;
+}
+
+#cart {
+    padding: 20px;
+    background-color: #f1f1f1;
+}
+
+#cart-items {
+    margin-bottom: 10px;
+}
+
+section {
+    padding: 40px 20px;
+}
+let cart = [];
+let total = 0;
+
+function addToCart(name, price) {
+    cart.push({ name, price });
+    total += price;
+    renderCart();
+}
+
+function renderCart() {
+    const cartItems = document.getElementById('cart-items');
+    cartItems.innerHTML = '';
+    cart.forEach(item => {
+        const div = document.createElement('div');
+        div.textContent = `${item.name} - $${item.price}`;
+        cartItems.appendChild(div);
+    });
+    document.getElementById('total').textContent = total;
+}
+
+function checkout() {
+    const paymentMethod = document.getElementById('payment-method').value;
+    alert(`Thank you for your purchase! You chose ${paymentMethod} as payment. Total: $${total}`);
+    cart = [];
+    total = 0;
+    renderCart();
+}
+
