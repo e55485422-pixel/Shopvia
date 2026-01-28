@@ -1,206 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shopvia – Online Shopping</title>
+import React from "react"; import { View, Text, TextInput, ScrollView, TouchableOpacity, Image } from "react-native"; import { Ionicons } from "@expo/vector-icons";
 
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
-body{background:#f5f5f5;color:#333}
+export default function App() { return ( <View style={{ flex: 1, backgroundColor: "#f2f2f2" }}> {/* Header */} <View style={{ backgroundColor: "#ff6a00", padding: 12 }}> <View style={{ flexDirection: "row", backgroundColor: "#fff", borderRadius: 25, alignItems: "center", paddingHorizontal: 12 }}> <Ionicons name="search" size={18} color="#999" /> <TextInput placeholder="Search products" style={{ flex: 1, padding: 8 }} /> <Ionicons name="camera" size={18} color="#999" /> </View> </View>
 
-/* HEADER */
-header{
-  background:#ff6a00;
-  color:#fff;
-  padding:15px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  position:sticky;
-  top:0;
-  z-index:1000;
-}
-header h1{font-size:24px}
-header span{font-weight:bold}
+<ScrollView>
+    {/* Promo Banner */}
+    <View style={{ backgroundColor: "#e60023", padding: 16, alignItems: "center" }}>
+      <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>UP TO 70% OFF</Text>
+      <Text style={{ color: "#fff" }}>Valentine's Day Sale</Text>
+    </View>
 
-/* HERO */
-.hero{
-  background:#fff;
-  padding:20px;
-  text-align:center;
-}
-.hero img{
-  width:100%;
-  max-height:250px;
-  object-fit:cover;
-  border-radius:10px;
-}
-.hero h2{margin:15px 0}
+    {/* Info Strip */}
+    <View style={{ flexDirection: "row", backgroundColor: "#fff" }}>
+      <Text style={{ flex: 1, padding: 10, fontSize: 12 }}>✔ Free Shipping</Text>
+      <Text style={{ flex: 1, padding: 10, fontSize: 12 }}>✔ Price Adjustment 30 days</Text>
+    </View>
 
-/* CATEGORIES */
-.categories{
-  display:flex;
-  overflow-x:auto;
-  gap:10px;
-  padding:15px;
-  background:#fff;
-}
-.cat{
-  min-width:100px;
-  background:#ff6a00;
-  color:#fff;
-  padding:15px;
-  text-align:center;
-  border-radius:8px;
-  font-size:14px;
-  flex-shrink:0;
-}
+    {/* Categories */}
+    <View style={{ backgroundColor: "#fff", padding: 12 }}>
+      <Text style={{ fontWeight: "bold", marginBottom: 8 }}>Shop by Category</Text>
+      <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+        {["Wigs & Hair", "Dresses", "Two Piece", "Pants", "Blouses", "Facial Care", "Accessories", "Sleepwear"].map((item) => (
+          <View key={item} style={{ width: "25%", alignItems: "center", marginBottom: 12 }}>
+            <View style={{ width: 50, height: 50, backgroundColor: "#ddd", borderRadius: 25, marginBottom: 4 }} />
+            <Text style={{ fontSize: 11, textAlign: "center" }}>{item}</Text>
+          </View>
+        ))}
+      </View>
+    </View>
 
-/* PRODUCTS */
-.products{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:15px;
-  padding:15px;
-}
-.product{
-  background:#fff;
-  border-radius:10px;
-  padding:10px;
-}
-.product img{
-  width:100%;
-  height:150px;
-  object-fit:cover;
-  border-radius:8px;
-}
-.product h4{margin:8px 0;font-size:14px}
-.price{color:#ff6a00;font-weight:bold}
+    {/* Deals */}
+    <View style={{ padding: 12 }}>
+      <Text style={{ fontWeight: "bold", marginBottom: 8 }}>Lightning Deals</Text>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between" }}>
+        {[1, 2, 3, 4].map((i) => (
+          <View key={i} style={{ width: "48%", backgroundColor: "#fff", borderRadius: 12, padding: 8, marginBottom: 12 }}>
+            <View style={{ height: 120, backgroundColor: "#ddd", borderRadius: 8, marginBottom: 6 }} />
+            <Text numberOfLines={2} style={{ fontSize: 12 }}>Trending Product {i}</Text>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 4 }}>
+              <Text style={{ color: "#ff6a00", fontWeight: "bold" }}>GH₵ 99.99</Text>
+              <Text style={{ fontSize: 10, textDecorationLine: "line-through", color: "#999" }}>199.99</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  </ScrollView>
 
-.product button{
-  width:100%;
-  padding:8px;
-  margin-top:5px;
-  border:none;
-  border-radius:5px;
-  cursor:pointer;
-}
-.add{background:#333;color:#fff}
-.buy{background:#ff6a00;color:#fff}
+  {/* Bottom Navigation */}
+  <View style={{ flexDirection: "row", borderTopWidth: 1, borderColor: "#ddd", backgroundColor: "#fff" }}>
+    {["home", "grid", "cart", "person"].map((icon, i) => (
+      <TouchableOpacity key={i} style={{ flex: 1, alignItems: "center", padding: 10 }}>
+        <Ionicons name={icon} size={22} color={i === 0 ? "#ff6a00" : "#666"} />
+        <Text style={{ fontSize: 10 }}>Home</Text>
+      </TouchableOpacity>
+    ))}
+  </View>
+</View>
 
-/* CART */
-.cart{
-  background:#fff;
-  padding:15px;
-  margin:15px;
-  border-radius:10px;
-}
-.cart div{margin-bottom:5px}
-
-/* PAYMENT */
-select, .checkout{
-  width:100%;
-  padding:10px;
-  margin-top:10px;
-}
-.checkout{
-  background:#ff6a00;
-  color:#fff;
-  border:none;
-  border-radius:5px;
-  font-size:16px;
-}
-</style>
-</head>
-
-<body>
-
-<header>
-  <h1>Shopvia</h1>
-  <span>Cart: <span id="count">0</span></span>
-</header>
-
-<section class="hero">
-  <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30">
-  <h2>Shop Smart. Shopvia.</h2>
-</section>
-
-<section class="categories">
-  <div class="cat">Fashion</div>
-  <div class="cat">Electronics</div>
-  <div class="cat">Beauty</div>
-  <div class="cat">Home</div>
-  <div class="cat">Kids</div>
-  <div class="cat">Accessories</div>
-</section>
-
-<section class="products" id="products">
-</section>
-
-<section class="cart">
-  <h3>Your Cart</h3>
-  <div id="cart"></div>
-  <strong>Total: $<span id="total">0</span></strong>
-
-  <select id="payment">
-    <option>MTN Mobile Money</option>
-    <option>Telecel Mobile Money</option>
-    <option>Visa Card</option>
-  </select>
-
-  <button class="checkout" onclick="checkout()">Checkout</button>
-</section>
-
-<script>
-const products=[
- {name:"Women Dress",price:25,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
- {name:"Sneakers",price:40,img:"https://images.unsplash.com/photo-1528701800489-20be3c3ea79b"},
- {name:"Smart Watch",price:55,img:"https://images.unsplash.com/photo-1519744792095-2f2205e87b6f"},
- {name:"Bluetooth Earbuds",price:30,img:"https://images.unsplash.com/photo-1585386959984-a4155228f97d"},
- {name:"Perfume",price:20,img:"https://images.unsplash.com/photo-1594035910387-fea47794261f"},
- {name:"Handbag",price:35,img:"https://images.unsplash.com/photo-1548036328-c9fa89d128fa"},
- {name:"Sofa Chair",price:120,img:"https://images.unsplash.com/photo-1615873968403-89e068629265"},
- {name:"Kids Outfit",price:22,img:"https://images.unsplash.com/photo-1600185365483-26d7a4cc7519"}
-];
-
-let cart=[],total=0;
-
-const productDiv=document.getElementById("products");
-products.forEach(p=>{
- productDiv.innerHTML+=`
-  <div class="product">
-    <img src="${p.img}">
-    <h4>${p.name}</h4>
-    <div class="price">$${p.price}</div>
-    <button class="add" onclick="add('${p.name}',${p.price})">Add to Cart</button>
-    <button class="buy" onclick="buy('${p.name}',${p.price})">Buy Now</button>
-  </div>
- `;
-});
-
-function add(name,price){
- cart.push({name,price});
- total+=price;
- render();
-}
-
-function buy(name,price){
- alert("Proceeding to payment for "+name+" ($"+price+")");
-}
-
-function render(){
- document.getElementById("cart").innerHTML=cart.map(i=>`${i.name} - $${i.price}`).join("<br>");
- document.getElementById("total").innerText=total;
- document.getElementById("count").innerText=cart.length;
-}
-
-function checkout(){
- if(cart.length===0){alert("Cart is empty");return;}
- alert("Order placed using "+document.getElementById("payment").value);
- cart=[];total=0;render();
-}
-</script>
-
-</body>
-</html>
+); }
