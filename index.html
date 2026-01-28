@@ -1,60 +1,55 @@
-import React from "react"; import { View, Text, TextInput, ScrollView, TouchableOpacity, Image } from "react-native"; import { Ionicons } from "@expo/vector-icons";
+// SHOPVIA – TEMU‑STYLE MOBILE APP (FULL STRUCTURE) // Tech: React Native + Expo
 
-export default function App() { return ( <View style={{ flex: 1, backgroundColor: "#f2f2f2" }}> {/* Header */} <View style={{ backgroundColor: "#ff6a00", padding: 12 }}> <View style={{ flexDirection: "row", backgroundColor: "#fff", borderRadius: 25, alignItems: "center", paddingHorizontal: 12 }}> <Ionicons name="search" size={18} color="#999" /> <TextInput placeholder="Search products" style={{ flex: 1, padding: 8 }} /> <Ionicons name="camera" size={18} color="#999" /> </View> </View>
+import React from "react"; import { View, Text, TextInput, ScrollView, TouchableOpacity, Image } from "react-native"; import { NavigationContainer } from "@react-navigation/native"; import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"; import { createNativeStackNavigator } from "@react-navigation/native-stack"; import { Ionicons } from "@expo/vector-icons";
 
-<ScrollView>
-    {/* Promo Banner */}
-    <View style={{ backgroundColor: "#e60023", padding: 16, alignItems: "center" }}>
-      <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>UP TO 70% OFF</Text>
-      <Text style={{ color: "#fff" }}>Valentine's Day Sale</Text>
-    </View>
+/* ---------------- HOME ---------------- */ function HomeScreen() { return ( <ScrollView style={{ flex: 1, backgroundColor: "#f2f2f2" }}> <View style={{ backgroundColor: "#ff6a00", padding: 12 }}> <View style={{ flexDirection: "row", backgroundColor: "#fff", borderRadius: 25, alignItems: "center", paddingHorizontal: 12 }}> <Ionicons name="search" size={18} color="#999" /> <TextInput placeholder="Search on Shopvia" style={{ flex: 1, padding: 8 }} /> <Ionicons name="camera" size={18} color="#999" /> </View> </View>
 
-    {/* Info Strip */}
-    <View style={{ flexDirection: "row", backgroundColor: "#fff" }}>
-      <Text style={{ flex: 1, padding: 10, fontSize: 12 }}>✔ Free Shipping</Text>
-      <Text style={{ flex: 1, padding: 10, fontSize: 12 }}>✔ Price Adjustment 30 days</Text>
-    </View>
-
-    {/* Categories */}
-    <View style={{ backgroundColor: "#fff", padding: 12 }}>
-      <Text style={{ fontWeight: "bold", marginBottom: 8 }}>Shop by Category</Text>
-      <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-        {["Wigs & Hair", "Dresses", "Two Piece", "Pants", "Blouses", "Facial Care", "Accessories", "Sleepwear"].map((item) => (
-          <View key={item} style={{ width: "25%", alignItems: "center", marginBottom: 12 }}>
-            <View style={{ width: 50, height: 50, backgroundColor: "#ddd", borderRadius: 25, marginBottom: 4 }} />
-            <Text style={{ fontSize: 11, textAlign: "center" }}>{item}</Text>
-          </View>
-        ))}
-      </View>
-    </View>
-
-    {/* Deals */}
-    <View style={{ padding: 12 }}>
-      <Text style={{ fontWeight: "bold", marginBottom: 8 }}>Lightning Deals</Text>
-      <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between" }}>
-        {[1, 2, 3, 4].map((i) => (
-          <View key={i} style={{ width: "48%", backgroundColor: "#fff", borderRadius: 12, padding: 8, marginBottom: 12 }}>
-            <View style={{ height: 120, backgroundColor: "#ddd", borderRadius: 8, marginBottom: 6 }} />
-            <Text numberOfLines={2} style={{ fontSize: 12 }}>Trending Product {i}</Text>
-            <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 4 }}>
-              <Text style={{ color: "#ff6a00", fontWeight: "bold" }}>GH₵ 99.99</Text>
-              <Text style={{ fontSize: 10, textDecorationLine: "line-through", color: "#999" }}>199.99</Text>
-            </View>
-          </View>
-        ))}
-      </View>
-    </View>
-  </ScrollView>
-
-  {/* Bottom Navigation */}
-  <View style={{ flexDirection: "row", borderTopWidth: 1, borderColor: "#ddd", backgroundColor: "#fff" }}>
-    {["home", "grid", "cart", "person"].map((icon, i) => (
-      <TouchableOpacity key={i} style={{ flex: 1, alignItems: "center", padding: 10 }}>
-        <Ionicons name={icon} size={22} color={i === 0 ? "#ff6a00" : "#666"} />
-        <Text style={{ fontSize: 10 }}>Home</Text>
-      </TouchableOpacity>
-    ))}
+<View style={{ backgroundColor: "#e60023", padding: 16, alignItems: "center" }}>
+    <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>UP TO 70% OFF</Text>
+    <Text style={{ color: "#fff" }}>Valentine Sale</Text>
   </View>
-</View>
+
+  <View style={{ flexDirection: "row", backgroundColor: "#fff" }}>
+    <Text style={{ flex: 1, padding: 10, fontSize: 12 }}>✔ Free Shipping</Text>
+    <Text style={{ flex: 1, padding: 10, fontSize: 12 }}>✔ Price Adjustment 30 days</Text>
+  </View>
+
+  <View style={{ backgroundColor: "#fff", padding: 12 }}>
+    <Text style={{ fontWeight: "bold", marginBottom: 8 }}>Shop by Category</Text>
+    <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+      {["Wigs", "Dresses", "Two‑Piece", "Shoes", "Beauty", "Pants", "Accessories", "Sleepwear"].map((item) => (
+        <View key={item} style={{ width: "25%", alignItems: "center", marginBottom: 12 }}>
+          <View style={{ width: 50, height: 50, backgroundColor: "#ddd", borderRadius: 25 }} />
+          <Text style={{ fontSize: 11 }}>{item}</Text>
+        </View>
+      ))}
+    </View>
+  </View>
+
+  <View style={{ padding: 12 }}>
+    <Text style={{ fontWeight: "bold", marginBottom: 8 }}>Lightning Deals</Text>
+    <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between" }}>
+      {[1,2,3,4].map(i => (
+        <View key={i} style={{ width: "48%", backgroundColor: "#fff", borderRadius: 12, padding: 8, marginBottom: 12 }}>
+          <View style={{ height: 120, backgroundColor: "#ddd", borderRadius: 8 }} />
+          <Text numberOfLines={2} style={{ fontSize: 12 }}>Trending Item {i}</Text>
+          <Text style={{ color: "#ff6a00", fontWeight: "bold" }}>GH₵ 99.99</Text>
+        </View>
+      ))}
+    </View>
+  </View>
+</ScrollView>
 
 ); }
+
+/* ---------------- CATEGORIES ---------------- */ function CategoriesScreen() { return ( <ScrollView style={{ padding: 12 }}> {["Wigs & Hair", "Women Clothing", "Men Clothing", "Beauty", "Shoes", "Accessories"].map(cat => ( <View key={cat} style={{ backgroundColor: "#fff", padding: 16, borderRadius: 10, marginBottom: 10 }}> <Text style={{ fontWeight: "bold" }}>{cat}</Text> </View> ))} </ScrollView> ); }
+
+/* ---------------- PRODUCT DETAILS ---------------- */ function ProductScreen() { return ( <View style={{ flex: 1, padding: 12 }}> <View style={{ height: 250, backgroundColor: "#ddd", borderRadius: 12 }} /> <Text style={{ fontSize: 18, fontWeight: "bold", marginTop: 10 }}>Glueless Wig</Text> <Text style={{ color: "#ff6a00", fontSize: 16 }}>GH₵ 299.00</Text> <TouchableOpacity style={{ backgroundColor: "#ff6a00", padding: 14, borderRadius: 30, marginTop: 20 }}> <Text style={{ color: "#fff", textAlign: "center" }}>Add to Cart</Text> </TouchableOpacity> </View> ); }
+
+/* ---------------- CART & CHECKOUT ---------------- */ function CartScreen() { return ( <View style={{ flex: 1, padding: 12 }}> <Text style={{ fontWeight: "bold", fontSize: 18 }}>Your Cart</Text> <View style={{ backgroundColor: "#fff", padding: 12, borderRadius: 10, marginTop: 10 }}> <Text>Glueless Wig</Text> <Text style={{ color: "#ff6a00" }}>GH₵ 299.00</Text> </View> <TouchableOpacity style={{ backgroundColor: "#ff6a00", padding: 14, borderRadius: 30, marginTop: 20 }}> <Text style={{ color: "#fff", textAlign: "center" }}>Checkout (Mobile Money)</Text> </TouchableOpacity> </View> ); }
+
+/* ---------------- AUTH ---------------- */ function ProfileScreen() { return ( <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}> <Text style={{ fontSize: 18 }}>Login / Sign Up</Text> <TouchableOpacity style={{ backgroundColor: "#ff6a00", padding: 12, borderRadius: 25, marginTop: 10 }}> <Text style={{ color: "#fff" }}>Continue</Text> </TouchableOpacity> </View> ); }
+
+/* ---------------- NAVIGATION ---------------- */ const Tab = createBottomTabNavigator();
+
+export default function App() { return ( <NavigationContainer> <Tab.Navigator screenOptions={({ route }) => ({ tabBarIcon: ({ color, size }) => { const icons = { Home: "home", Categories: "grid", Cart: "cart", Profile: "person" }; return <Ionicons name={icons[route.name]} size={size} color={color} />; }, tabBarActiveTintColor: "#ff6a00", })}> <Tab.Screen name="Home" component={HomeScreen} /> <Tab.Screen name="Categories" component={CategoriesScreen} /> <Tab.Screen name="Cart" component={CartScreen} /> <Tab.Screen name="Profile" component={ProfileScreen} /> </Tab.Navigator> </NavigationContainer> ); }
