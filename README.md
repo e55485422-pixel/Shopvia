@@ -5,6 +5,7 @@ shopvia/
 ├── index.html
 ├── style.css
 ├── script.js
+├── products.json
 ├── images/
-│   └── (all product images go here)
+│   └── (product images & banners)
 └── README.md
