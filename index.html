@@ -1,247 +1,67 @@
-<!DOCTYPE html><html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ocean Blue Shop</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #0077b6;
-            --secondary-color: #ffffff;
-            --accent-color: #00b4d8;
-        }
-        body { font-family: 'Roboto', sans-serif; margin:0; background-color: var(--secondary-color); color: #000; }
-        header { background-color: var(--primary-color); color: var(--secondary-color); padding: 1rem 2rem; display:flex; justify-content:space-between; align-items:center; position: sticky; top:0; z-index: 100; }
-        header nav a { color: var(--secondary-color); text-decoration:none; margin-left:1rem; font-weight:bold; }
-        header nav a:hover { color: var(--accent-color); }
-        .hero { text-align:center; padding: 4rem 2rem; background-color: var(--accent-color); color: var(--secondary-color); }
-        .hero h1 { margin-bottom:1rem; }
-        .search-bar { text-align:center; margin:1rem 0; }
-        .search-bar input { padding:0.5rem; width:60%; border-radius:4px; border:1px solid #ccc; }
-        .categories { display:flex; justify-content:center; gap:1rem; margin-bottom:2rem; flex-wrap:wrap; }
-        .categories button { padding:0.5rem 1rem; border:none; border-radius:4px; background-color:var(--primary-color); color:white; cursor:pointer; font-weight:bold; }
-        .categories button.active { background-color:var(--accent-color); }
-        .products { display:grid; grid-template-columns: repeat(auto-fill, minmax(250px,1fr)); gap:1rem; padding:0 2rem 2rem 2rem; }
-        .product-card { border:1px solid #ccc; border-radius:8px; overflow:hidden; text-align:center; padding:1rem; background:white; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
-        .product-card img { width:100%; height:200px; object-fit:cover; border-radius:4px; }
-        .product-card button { margin-top:1rem; background-color: var(--primary-color); color: var(--secondary-color); border:none; padding:0.5rem 1rem; cursor:pointer; border-radius:4px; font-weight:bold; }
-        .product-card button:hover { background-color: var(--accent-color); }
-        footer { background-color: var(--primary-color); color: var(--secondary-color); text-align:center; padding:2rem; }
-        footer a { color: var(--secondary-color); text-decoration: underline; }
-        .cart { position:fixed; right:0; top:0; background-color: var(--secondary-color); width:90%; max-width:400px; height:100%; box-shadow:-2px 0 5px rgba(0,0,0,0.3); transform:translateX(100%); transition: transform 0.3s ease; padding:1rem; overflow-y:auto; z-index:1000; }
-        .cart.open { transform:translateX(0); }
-        .cart h2 { margin-top:0; }
-        .cart-item { display:flex; justify-content:space-between; margin-bottom:1rem; }
-        .cart-toggle { cursor:pointer; font-weight:bold; }
-        .review-section { margin-top:1rem; text-align:left; }
-        .review-item { border-top:1px solid #ccc; padding:0.5rem 0; }
-        @media(max-width:768px){.products{grid-template-columns:1fr 1fr;}.search-bar input{width:90%;}} 
-        @media(max-width:480px){.products{grid-template-columns:1fr;}}
-    </style>
-</head>
-<body><header>
-    <h2>Ocean Blue Shop</h2>
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#about">About Us</a>
-        <a href="#products">Products</a>
-        <a href="#contact">Contact</a>
-        <span class="cart-toggle" onclick="toggleCart()">Cart 🛒</span>
-    </nav>
-</header><div class="hero" id="home">
-    <h1>Welcome to Ocean Blue Shop</h1>
-    <p>Quality products delivered to your doorstep.</p>
-</div><section id="about">
-    <h2>About Us</h2>
-    <p>We are a passionate team dedicated to bringing you the best products with a smooth pre-order experience.</p>
-    <h3>Our Vision</h3>
-    <p>To be the most trusted pre-order marketplace in Ghana.</p>
-    <h3>Our Mission</h3>
-    <ul>
-        <li>Provide high-quality products.</li>
-        <li>Ensure transparent pre-order delivery times.</li>
-        <li>Create a seamless online shopping experience.</li>
-    </ul>
-</section><section id="products">
-    <h2>Products</h2>
-    <div class="search-bar">
-        <input type="text" id="search" placeholder="Search products..." onkeyup="filterProducts()">
-    </div>
-    <div class="categories">
-        <button class="active" onclick="filterCategory('all', this)">All</button>
-        <button onclick="filterCategory('bags', this)">Bags</button>
-        <button onclick="filterCategory('watches', this)">Watches</button>
-        <button onclick="filterCategory('shoes', this)">Shoes</button>
-    </div>
-    <div class="products" id="product-list"></div>
-</section><div class="cart" id="cart">
-    <h2>Your Cart</h2>
-    <input type="email" id="customer-email" placeholder="Enter your email" required style="width:90%; padding:0.5rem; margin-bottom:1rem;">
-    <div id="cart-items"></div>
-    <hr>
-    <p>Total: GH₵<span id="cart-total">0</span></p>
-    <button onclick="checkout()">Pay with Paystack/Flutterwave</button>
-</div><section id="contact">
-    <h2>Contact Us</h2>
-    <p>Email: support@oceanblueshop.com</p>
-    <p>Phone: 0598695820 (You can pay directly via mobile money or bank transfer)</p>
-    <p><a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a></p>
-</section><footer>
-    <p>&copy; 2026 Ocean Blue Shop. All rights reserved.</p>
-</footer><!-- Paystack script --><script src="https://js.paystack.co/v1/inline.js"></script><script>
-const products = [
-    {id:1,name:"Blue Bag",price:150,img:"https://via.placeholder.com/300x200.png?text=Blue+Bag",category:"bags",reviews:[]},
-    {id:2,name:"Ocean Watch",price:300,img:"https://via.placeholder.com/300x200.png?text=Ocean+Watch",category:"watches",reviews:[]},
-    {id:3,name:"White Shoes",price:200,img:"https://via.placeholder.com/300x200.png?text=White+Shoes",category:"shoes",reviews:[]},
-    {id:4,name:"Red Bag",price:180,img:"https://via.placeholder.com/300x200.png?text=Red+Bag",category:"bags",reviews:[]},
-    {id:5,name:"Black Watch",price:350,img:"https://via.placeholder.com/300x200.png?text=Black+Watch",category:"watches",reviews:[]},
-    {id:6,name:"Blue Shoes",price:220,img:"https://via.placeholder.com/300x200.png?text=Blue+Shoes",category:"shoes",reviews:[]}
-];
+import React from 'react'; import { SafeAreaView, View, Text, Image, FlatList, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 
-const productList = document.getElementById('product-list');
-function displayProducts(list){
-    productList.innerHTML='';
-    list.forEach(p=>{
-        const card=document.createElement('div');
-        card.className='product-card';
-        card.innerHTML=`<img src='${p.img}' alt='${p.name}'><h3>${p.name}</h3><p>GH₵${p.price}</p><button onclick='addToCart(${p.id})'>Add to Cart</button><div class='review-section'><h4>Reviews:</h4><div id='reviews-${p.id}'>${p.reviews.map(r=>`<div class='review-item'>${r}</div>`).join('')}</div><input type='text' id='review-input-${p.id}' placeholder='Add a review'><button onclick='addReview(${p.id})'>Submit</button></div>`;
-        productList.appendChild(card);
-    });
-}
+// NOTE: This is a UI clone inspired by your screenshots (home, categories, cart, checkout). // It focuses on layout & styling, not backend logic.
 
-displayProducts(products);
+const CATEGORIES = [ 'Cell Phones & Accessories','Women's Clothing','Beauty & Health','Home & Kitchen', 'Women's Shoes','Men's Clothing','Sports & Outdoors' ];
 
-function filterCategory(cat, btn){
-    document.querySelectorAll('.categories button').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    if(cat==='all') displayProducts(products);
-    else displayProducts(products.filter(p=>p.category===cat));
-}
+const PRODUCTS = [ { id: '1', title: 'Short Curly Bob Wig', price: 'GH₵96.33', tag: 'LAST DAY', img: 'https://via.placeholder.com/300' }, { id: '2', title: 'Metal Camera Protector (2pcs)', price: 'GH₵26.40', tag: 'ONLY 6 LEFT', img: 'https://via.placeholder.com/300' }, { id: '3', title: 'Phone Case – Shockproof', price: 'GH₵56.83', tag: 'MEGA SALE', img: 'https://via.placeholder.com/300' }, { id: '4', title: 'Women Pants Set', price: 'GH₵141.35', tag: 'CLEARANCE', img: 'https://via.placeholder.com/300' }, ];
 
-function filterProducts(){
-    const search=document.getElementById('search').value.toLowerCase();
-    displayProducts(products.filter(p=>p.name.toLowerCase().includes(search)));
-}
+export default function App() { return ( <SafeAreaView style={styles.container}> <ScrollView> {/* Header */} <View style={styles.header}> <Text style={styles.logo}>Shop</Text> <View style={styles.searchBar}> <Text style={styles.searchText}>Search products</Text> </View> </View>
 
-let cart=[];
-function toggleCart(){document.getElementById('cart').classList.toggle('open');}
-function addToCart(id){
-    const product=products.find(p=>p.id===id);
-    const existing=cart.find(c=>c.id===id);
-    if(existing) existing.qty+=1;
-    else cart.push({...product,qty:1});
-    updateCart();
-}
-function updateCart(){
-    const cartItems=document.getElementById('cart-items');
-    cartItems.innerHTML='';
-    let total=0;
-    cart.forEach(item=>{
-        total+=item.price*item.qty;
-        const div=document.createElement('div');
-        div.className='cart-item';
-        div.innerHTML=`${item.name} x${item.qty} - GH₵${item.price*item.qty}`;
-        cartItems.appendChild(div);
-    });
-    document.getElementById('cart-total').innerText=total;
-}
+{/* Categories */}
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categories}>
+      {CATEGORIES.map(cat => (
+        <View key={cat} style={styles.categoryChip}>
+          <Text style={styles.categoryText}>{cat}</Text>
+        </View>
+      ))}
+    </ScrollView>
 
-function checkout(){
-    if(cart.length===0){
-        alert('Cart is empty!');
-        return;
-    }
-    let total = cart.reduce((sum,item)=> sum + item.price*item.qty, 0);
-    let email = document.getElementById('customer-email').value;
-    if(email.trim()===''){ alert('Enter your email for online payment'); return; }
-    let choice = confirm("Press OK to pay online via Paystack, Cancel to pay directly via 0598695820 (mobile/bank).");
-    if(choice){
-        payWithPaystack(total,email);
-    } else {
-        alert('Please pay directly via mobile/bank to 0598695820');
-    }
-}
+    {/* Free shipping banner */}
+    <View style={styles.banner}>
+      <Text style={styles.bannerText}>✓ Free shipping  ✓ Price adjustment within 30 days</Text>
+    </View>
 
-function payWithPaystack(totalAmount,email){
-    var handler = PaystackPop.setup({
-        key: 'pk_test_d6048256de06b9c21f546a6bb3b506a7653d0262',
-        email: email,
-        amount: totalAmount*100,
-        currency: 'GHS',
-        ref: 'OBShop-'+Math.floor((Math.random() * 1000000000)+1),
-        callback: function(response){
-            alert('Payment successful. Transaction ref: '+response.reference);
-            cart=[];
-            updateCart();
-        },
-        onClose: function(){
-            alert('Payment window closed.');
-        }
-    });
-    handler.openIframe();
-}
+    {/* Product Grid */}
+    <FlatList
+      data={PRODUCTS}
+      numColumns={2}
+      keyExtractor={(item) => item.id}
+      columnWrapperStyle={{ justifyContent: 'space-between' }}
+      renderItem={({ item }) => (
+        <View style={styles.card}>
+          <Image source={{ uri: item.img }} style={styles.image} />
+          <View style={styles.tag}><Text style={styles.tagText}>{item.tag}</Text></View>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.price}>{item.price}</Text>
+          <TouchableOpacity style={styles.cartBtn}>
+            <Text style={styles.cartBtnText}>Add to cart</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    />
 
-function addReview(id){
-    const input=document.getElementById(`review-input-${id}`);
-    if(input.value.trim()!==""){
-        const product=products.find(p=>p.id===id);
-        product.reviews.push(input.value);
-        displayProducts(products);
-    }
-}
-</script></body>
-</html>
-<!DOCTYPE html>
-<html>
-<head>
-  <title>OceanBlue Store</title>
-  <link rel="stylesheet" href="style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
+    {/* Checkout preview */}
+    <View style={styles.checkoutBar}>
+      <View>
+        <Text style={styles.totalLabel}>Total</Text>
+        <Text style={styles.total}>GH₵998.57</Text>
+      </View>
+      <TouchableOpacity style={styles.checkoutBtn}>
+        <Text style={styles.checkoutText}>Checkout (16)</Text>
+      </TouchableOpacity>
+    </View>
+  </ScrollView>
+</SafeAreaView>
 
-<header>
-  <h1>OceanBlue Store</h1>
-  <p>Pre-order & Pay Securely</p>
-</header>
+); }
 
-<section class="categories">
-  <div onclick="go('products.html?cat=Bags')">👜 Bags</div>
-  <div onclick="go('products.html?cat=Shoes')">👟 Shoes</div>
-  <div onclick="go('products.html?cat=Watches')">⌚ Watches</div>
-</section>
+const styles = StyleSheet.create({ container: { flex: 1, backgroundColor: '#fff' }, header: { padding: 16 }, logo: { fontSize: 22, fontWeight: '700', marginBottom: 10 }, searchBar: { backgroundColor: '#f2f2f2', padding: 12, borderRadius: 10 }, searchText: { color: '#999' },
 
-<script>
-function go(page){ window.location = page; }
-</script>
+categories: { paddingHorizontal: 10, marginVertical: 10 }, categoryChip: { backgroundColor: '#f5f5f5', padding: 10, borderRadius: 20, marginRight: 8 }, categoryText: { fontSize: 12 },
 
-</body>
-</html>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #eef7ff;
-}
+banner: { backgroundColor: '#eaf7ea', padding: 10, margin: 12, borderRadius: 8 }, bannerText: { color: '#2e7d32', fontSize: 12, textAlign: 'center' },
 
-header {
-  background: #0077cc;
-  color: white;
-  padding: 20px;
-  text-align: center;
-}
+card: { width: '48%', backgroundColor: '#fff', marginBottom: 14, borderRadius: 12, elevation: 2, padding: 8 }, image: { width: '100%', height: 140, borderRadius: 10 }, tag: { position: 'absolute', top: 10, left: 10, backgroundColor: '#ff6a00', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 }, tagText: { color: '#fff', fontSize: 10 }, title: { marginTop: 8, fontSize: 13, fontWeight: '500' }, price: { marginTop: 4, color: '#ff6a00', fontWeight: '700' }, cartBtn: { marginTop: 8, backgroundColor: '#ff6a00', padding: 8, borderRadius: 8 }, cartBtnText: { color: '#fff', fontSize: 12, textAlign: 'center' },
 
-.categories {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(120px,1fr));
-  gap: 15px;
-  padding: 20px;
-}
-
-.categories div {
-  background: white;
-  padding: 30px;
-  text-align: center;
-  border-radius: 10px;
-  font-size: 18px;
-  cursor: pointer;
-}
+checkoutBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 16, borderTopWidth: 1, borderColor: '#eee' }, totalLabel: { fontSize: 12, color: '#666' }, total: { fontSize: 18, fontWeight: '700' }, checkoutBtn: { backgroundColor: '#ff6a00', paddingHorizontal: 20, paddingVertical: 12, borderRadius: 24 }, checkoutText: { color: '#fff', fontWeight: '700' } });
