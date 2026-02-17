@@ -1,11 +1,6 @@
-# Shopvia
-We are a modern fashion destination offering carefully selected clothing and accessories for men, women, and kids. From elegant outfits to everyday essentials, our collection blends style, quality, and affordability. We bring you the latest trends in dresses, shoes, bags, perfumes, wigs, and accessories.
-shopvia/
-│
-├── index.html
-├── style.css
-├── script.js
-├── products.json
-├── images/
-│   └── (product images & banners)
-└── README.md
+index.html      (home + categories)
+products.html   (product listing)
+cart.html       (shopping cart)
+checkout.html   (Paystack payment)
+style.css       (design)
+script.js       (logic)
