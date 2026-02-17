@@ -1,51 +1,60 @@
-import * as React from 'react';
-import { Text, View, SafeAreaView } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// Temu-style e-commerce website with product details & cart logic (React + Tailwind CSS)
 
-const Tab = createBottomTabNavigator();
+import React, { useState } from 'react';
 
-function Home() {
-  return (
-    <SafeAreaView style={{ flex:1, justifyContent:'center', alignItems:'center' }}>
-      <Text>🏠 Home</Text>
-    </SafeAreaView>
-  );
-}
+const categories = ['Cell Phones & Accessories','Women's Clothing','Beauty & Health','Home & Kitchen','Women's Shoes','Men's Clothing','Sports & Outdoors'];
 
-function Categories() {
-  return (
-    <SafeAreaView style={{ flex:1, justifyContent:'center', alignItems:'center' }}>
-      <Text>📂 Categories</Text>
-    </SafeAreaView>
-  );
-}
+const productsData = [ { id: 1, name: 'Short Curly Bob Wig', price: 96.33, tag: 'LAST DAY', img: 'https://via.placeholder.com/300' }, { id: 2, name: 'Metal Camera Protector (2pcs)', price: 26.40, tag: 'ONLY 6 LEFT', img: 'https://via.placeholder.com/300' }, { id: 3, name: 'Phone Case – Shockproof', price: 56.83, tag: 'MEGA SALE', img: 'https://via.placeholder.com/300' }, { id: 4, name: 'Women Pants Set', price: 141.35, tag: 'CLEARANCE', img: 'https://via.placeholder.com/300' }, ];
 
-function Cart() {
-  return (
-    <SafeAreaView style={{ flex:1, justifyContent:'center', alignItems:'center' }}>
-      <Text>🛒 Cart</Text>
-    </SafeAreaView>
-  );
-}
+export default function App() { const [cart, setCart] = useState([]); const [selectedProduct, setSelectedProduct] = useState(null);
 
-function You() {
-  return (
-    <SafeAreaView style={{ flex:1, justifyContent:'center', alignItems:'center' }}>
-      <Text>👤 You</Text>
-    </SafeAreaView>
-  );
-}
+const addToCart = (product) => { const existing = cart.find(item => item.id === product.id); if (existing) { setCart(cart.map(item => item.id === product.id ? {...item, qty: item.qty + 1} : item)); } else { setCart([...cart, {...product, qty: 1}]); } };
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Tab.Navigator screenOptions={{ headerShown:false }}>
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Categories" component={Categories} />
-        <Tab.Screen name="Cart" component={Cart} />
-        <Tab.Screen name="You" component={You} />
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
-}
+const removeFromCart = (id) => { setCart(cart.filter(item => item.id !== id)); };
+
+const totalPrice = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+if (selectedProduct) { // Product details page return ( <div className="min-h-screen bg-gray-100 p-4"> <button className="mb-4 text-orange-500" onClick={() => setSelectedProduct(null)}>← Back</button> <div className="bg-white p-4 rounded shadow max-w-md mx-auto"> <img src={selectedProduct.img} alt={selectedProduct.name} className="w-full h-64 object-cover rounded" /> <h2 className="text-xl font-bold mt-2">{selectedProduct.name}</h2> <p className="text-orange-600 font-bold mt-1">GH₵{selectedProduct.price.toFixed(2)}</p> <p className="mt-2 text-sm text-gray-600">{selectedProduct.tag}</p> <button onClick={() => addToCart(selectedProduct)} className="mt-4 w-full bg-orange-500 text-white py-2 rounded hover:bg-orange-600">Add to Cart</button> </div> </div> ); }
+
+// Main store page return ( <div className="min-h-screen bg-gray-100 pb-24"> {/* Header */} <header className="bg-white p-4 shadow-md"> <div className="max-w-6xl mx-auto flex justify-between items-center"> <div className="text-2xl font-bold text-orange-600">Shop</div> <input type="text" placeholder="Search products" className="border rounded-lg px-4 py-2 w-1/2" /> </div> </header>
+
+{/* Categories */}
+  <div className="bg-white py-3 shadow-sm">
+    <div className="max-w-6xl mx-auto flex space-x-4 overflow-x-auto">
+      {categories.map((cat) => (
+        <div key={cat} className="px-4 py-2 bg-gray-200 rounded-full whitespace-nowrap text-sm cursor-pointer hover:bg-orange-100">
+          {cat}
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {/* Banner */}
+  <div className="max-w-6xl mx-auto mt-4 bg-green-100 text-green-700 text-center py-2 rounded-md">
+    ✓ Free shipping &nbsp;&nbsp; ✓ Price adjustment within 30 days
+  </div>
+
+  {/* Product Grid */}
+  <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+    {productsData.map((product) => (
+      <div key={product.id} className="bg-white rounded-lg shadow p-4 relative cursor-pointer" onClick={() => setSelectedProduct(product)}>
+        <img src={product.img} alt={product.name} className="w-full h-48 object-cover rounded-md" />
+        <div className="absolute top-2 left-2 bg-orange-500 text-white text-xs px-2 py-1 rounded">{product.tag}</div>
+        <h3 className="mt-2 font-semibold text-sm">{product.name}</h3>
+        <p className="text-orange-600 font-bold mt-1">GH₵{product.price.toFixed(2)}</p>
+        <button onClick={(e) => { e.stopPropagation(); addToCart(product); }} className="mt-2 w-full bg-orange-500 text-white py-2 rounded hover:bg-orange-600">Add to cart</button>
+      </div>
+    ))}
+  </div>
+
+  {/* Cart preview */}
+  <div className="fixed bottom-0 left-0 right-0 bg-white shadow-inner p-4 flex justify-between items-center max-w-6xl mx-auto">
+    <div>
+      <p className="text-gray-600 text-sm">Total</p>
+      <p className="font-bold text-lg">GH₵{totalPrice.toFixed(2)}</p>
+    </div>
+    <button className="bg-orange-500 text-white px-6 py-3 rounded-lg font-bold hover:bg-orange-600">Checkout ({cart.reduce((sum, item) => sum + item.qty, 0)})</button>
+  </div>
+</div>
+
+); }
