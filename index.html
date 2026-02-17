@@ -39,7 +39,6 @@ import React from "react"; import { View, Text, TextInput, ScrollView, Touchable
     </View>
   </View>
 </ScrollView>
-
 ); }
 
 /* ---------------- CATEGORIES ---------------- */ function CategoriesScreen() { return ( <ScrollView style={{ padding: 12 }}> {["Wigs & Hair", "Women Clothing", "Men Clothing", "Beauty", "Shoes", "Accessories"].map(cat => ( <View key={cat} style={{ backgroundColor: "#fff", padding: 16, borderRadius: 10, marginBottom: 10 }}> <Text style={{ fontWeight: "bold" }}>{cat}</Text> </View> ))} </ScrollView> ); }
