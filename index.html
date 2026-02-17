@@ -191,3 +191,57 @@ function addReview(id){
 }
 </script></body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OceanBlue Store</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<header>
+  <h1>OceanBlue Store</h1>
+  <p>Pre-order & Pay Securely</p>
+</header>
+
+<section class="categories">
+  <div onclick="go('products.html?cat=Bags')">👜 Bags</div>
+  <div onclick="go('products.html?cat=Shoes')">👟 Shoes</div>
+  <div onclick="go('products.html?cat=Watches')">⌚ Watches</div>
+</section>
+
+<script>
+function go(page){ window.location = page; }
+</script>
+
+</body>
+</html>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #eef7ff;
+}
+
+header {
+  background: #0077cc;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(120px,1fr));
+  gap: 15px;
+  padding: 20px;
+}
+
+.categories div {
+  background: white;
+  padding: 30px;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+}
