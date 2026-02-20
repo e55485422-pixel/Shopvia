@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopvia | Cart</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-row">
+        <a href="index.html" class="brand">Shopvia</a>
+        <nav class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="products.html">Products</a>
+          <a href="cart.html" class="active">Cart <span id="cart-count">0</span></a>
+          <a href="checkout.html">Checkout</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container section">
+      <h1>Your cart</h1>
+      <p>Step 3: Edit item quantity and see your total update instantly.</p>
+      <div id="cart-items" class="stack"></div>
+      <div class="cart-summary">
+        <p>Total: <strong id="cart-total">$0.00</strong></p>
+        <a class="button" href="checkout.html">Continue to checkout</a>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
